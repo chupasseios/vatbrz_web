@@ -1,0 +1,255 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.header {
+  margin-bottom: 48px;
+}
+
+.title {
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #ffffff;
+  margin-bottom: 16px;
+}
+
+.description {
+  font-size: 18px;
+  color: #A0A5D6;
+  max-width: 600px;
+  line-height: 1.5;
+}
+
+/* Tabs */
+.tabsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 48px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 24px;
+}
+
+.tabButton {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #A0A5D6;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.tabButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.activeTab {
+  background: #0DDB6E;
+  border-color: #0DDB6E;
+  color: #050A2D;
+}
+
+.activeTab:hover {
+  background: #10e876;
+  color: #050A2D;
+}
+
+/* Department Content */
+.departmentContent {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.departmentTitle {
+  font-size: 36px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 32px;
+}
+
+/* Grids */
+.leadersGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.staffGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+/* Cards */
+.staffCard {
+  border-radius: 16px;
+  transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
+  background: rgba(18, 19, 27, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.staffCard::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+  transform: skewX(-25deg);
+  transition: left 0.5s ease;
+}
+
+.staffCard:hover::before {
+  left: 200%;
+}
+
+.staffCard:hover {
+  transform: translateY(-4px);
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Regular Card overrides */
+.staffCard:not(.leaderCard) {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Leader Card overrides */
+.leaderCard {
+  padding: 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+  border: 1px solid rgba(13, 219, 110, 0.3); /* Subtle green border for leaders */
+}
+
+.leaderCard:hover {
+  border-color: rgba(13, 219, 110, 0.6);
+  box-shadow: 0 8px 32px rgba(13, 219, 110, 0.1);
+}
+
+.leaderCard .avatarContainer {
+  margin-bottom: 0;
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+}
+
+.leaderCard .cardInfo {
+  text-align: left;
+}
+
+.leaderCard .staffName {
+  font-size: 24px;
+}
+
+/* Avatars */
+.avatarContainer {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 16px;
+  background-color: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.avatarFallback {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Info */
+.staffRole {
+  font-size: 12px;
+  font-weight: 700;
+  color: #0DDB6E;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.staffName {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.staffVacant {
+  font-size: 18px;
+  font-weight: 600;
+  color: #A0A5D6;
+  font-style: italic;
+}
+
+/* Sub Departments */
+.subDepartmentsContainer {
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding-left: 24px;
+  border-left: 2px solid rgba(13, 219, 110, 0.3);
+}
+
+.subDepartmentSection {
+  background: rgba(255, 255, 255, 0.02);
+  padding: 32px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.subDepartmentTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 48px;
+  }
+  .leadersGrid {
+    grid-template-columns: 1fr;
+  }
+  .leaderCard {
+    flex-direction: column;
+    text-align: center;
+  }
+  .leaderCard .cardInfo {
+    text-align: center;
+  }
+  .subDepartmentsContainer {
+    padding-left: 12px;
+  }
+  .subDepartmentSection {
+    padding: 16px;
+  }
+}

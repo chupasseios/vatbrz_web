@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# VATBRZ Website
 
-## Getting Started
+Repositório oficial do novo site da VATBRZ (VATSIM Brasil).
+Este site foi construído com **Next.js**, **React**, e **TypeScript**, e utiliza requisições à API oficial da VATSIM para renderizar informações de tráfego aéreo e controladores em tempo real no Brasil.
 
-First, run the development server:
+## Pré-requisitos
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Certifique-se de ter instalado em sua máquina:
+- [Node.js](https://nodejs.org/) (versão 18 ou superior)
+- NPM, Yarn, ou pnpm
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Como Iniciar o Projeto Localmente
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Siga os passos abaixo para testar o site no seu ambiente de desenvolvimento:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Instale as dependências:**
+   Abra o terminal na pasta raiz do projeto e execute:
+   ```bash
+   npm install
+   ```
 
-## Learn More
+2. **Inicie o servidor de desenvolvimento:**
+   ```bash
+   npm run dev
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+3. **Acesse no navegador:**
+   Abra o seu navegador e acesse [http://localhost:3000](http://localhost:3000). O site deve estar rodando e os dados ao vivo (eventos e VATSIM) já estarão se conectando à API pública!
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Scripts Adicionais
+- `npm run build`: Cria uma versão de produção otimizada do site.
+- `npm run start`: Inicia o servidor com a versão de produção gerada (necessita rodar o build antes).
+- `npm run lint`: Analisa o código em busca de erros de sintaxe ou boas práticas.
