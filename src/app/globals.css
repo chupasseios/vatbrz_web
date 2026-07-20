@@ -1,5 +1,5 @@
 :root {
-  --background: #11121A;
+  --background: #050A2D;
   --foreground: #FAFAFF;
   --glass-bg: rgba(18, 19, 27, 0.1);
   --glass-border: rgba(250, 250, 255, 0.06);
@@ -65,7 +65,7 @@ a {
   height: 100vh;
   z-index: -1;
   background: 
-    radial-gradient(circle at 50% 50%, rgba(18, 19, 27, 0.3) 0%, #11121A 80%),
+    radial-gradient(circle at 50% 50%, rgba(18, 19, 27, 0.3) 0%, var(--background) 80%),
     linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 40%);
   pointer-events: none;
 }
