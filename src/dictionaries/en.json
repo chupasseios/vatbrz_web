@@ -122,9 +122,16 @@
     "directorEmail": "diretor@vatsim.com.br"
   },
   "staffPage": {
-    "title1": "Our",
-    "title2": "Staff",
-    "subtitle": "Meet the volunteers who make VATBRZ happen. Our team dedicates their time and expertise to provide the best flight simulation and air traffic control.",
+    "eyebrow": "THE PEOPLE BEHIND IT",
+    "title1": "The people who",
+    "title2": "bring the sky to life.",
+    "subtitle": "Behind every frequency, event, and training session is a team turning passion into experience.",
+    "teamNumbers": "Team numbers",
+    "departments": "departments",
+    "volunteers": "volunteers",
+    "departmentsNavigation": "Team departments",
+    "department": "Department",
+    "members": "members",
     "vacant": "Vacant"
   },
   "comingSoon": {

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import styles from './Staff.module.css';
 import { StaffDepartment, StaffMember } from '@/services/staff';
@@ -12,112 +12,120 @@ interface StaffClientProps {
 
 export default function StaffClient({ dict, staffData }: StaffClientProps) {
   const [activeTab, setActiveTab] = useState(staffData[0]?.id || '');
+  const activeDepartment = staffData.find((department) => department.id === activeTab);
 
-  const activeDepartment = staffData.find((dept) => dept.id === activeTab);
+  const countDepartmentMembers = (department: StaffDepartment) =>
+    department.members.length +
+    (department.subDepartments?.reduce((total, subDepartment) => total + subDepartment.members.length, 0) || 0);
 
-  // Helper function to render a staff member card
-  const renderMemberCard = (member: StaffMember, isLeader: boolean) => {
-    const cardClass = isLeader ? `${styles.staffCard} ${styles.leaderCard}` : styles.staffCard;
+  const totalMembers = staffData.reduce(
+    (total, department) => total + countDepartmentMembers(department),
+    0,
+  );
 
-    return (
-      <div key={member.id} className={cardClass} style={{ opacity: member.vacant ? 0.6 : 1 }}>
-        <div className={styles.avatarContainer}>
-          {member.photoUrl && !member.vacant ? (
-            <Image src={member.photoUrl} alt={member.name} fill style={{ objectFit: 'cover' }} />
-          ) : (
-            <svg className={styles.avatarFallback} width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-          )}
-        </div>
-        <div className={styles.cardInfo}>
-          <div className={styles.staffRole}>{member.role}</div>
-          {member.vacant ? (
-            <div className={styles.staffVacant}>{dict.staffPage.vacant}</div>
-          ) : (
-            <div className={styles.staffName}>{member.name}</div>
-          )}
-        </div>
+  const isLeader = (member: StaffMember) => {
+    const role = member.role.toLocaleLowerCase('pt-BR');
+    return !role.includes('vice') && ['diretor', 'gerente', 'líder'].some((title) => role.includes(title));
+  };
+
+  const renderMemberCard = (member: StaffMember) => (
+    <article
+      key={member.id}
+      className={`${styles.staffCard} ${isLeader(member) ? styles.leaderCard : ''}`}
+      style={{ opacity: member.vacant ? 0.62 : 1 }}
+    >
+      <div className={styles.avatarContainer}>
+        {member.photoUrl && !member.vacant ? (
+          <Image src={member.photoUrl} alt={member.name} fill sizes="76px" style={{ objectFit: 'cover' }} />
+        ) : (
+          <svg className={styles.avatarFallback} width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        )}
       </div>
-    );
-  };
-
-  // Helper function to render members grouped by hierarchy
-  const renderMembers = (members: StaffMember[]) => {
-    // Identify leaders (e.g., Diretor, Gerente, Líder)
-    const leaders = members.filter((m) => 
-      m.role.toLowerCase().includes('diretor') && !m.role.toLowerCase().includes('vice') || 
-      m.role.toLowerCase().includes('gerente') && !m.role.toLowerCase().includes('vice') ||
-      m.role.toLowerCase() === 'líder'
-    );
-    
-    const others = members.filter((m) => !leaders.includes(m));
-
-    return (
-      <>
-        {leaders.length > 0 && (
-          <div className={styles.leadersGrid}>
-            {leaders.map((m) => renderMemberCard(m, true))}
-          </div>
+      <div className={styles.cardInfo}>
+        <div className={styles.staffRole}>{member.role}</div>
+        {member.vacant ? (
+          <div className={styles.staffVacant}>{dict.staffPage.vacant}</div>
+        ) : (
+          <div className={styles.staffName}>{member.name}</div>
         )}
-        {others.length > 0 && (
-          <div className={styles.staffGrid}>
-            {others.map((m) => renderMemberCard(m, false))}
-          </div>
-        )}
-      </>
-    );
-  };
+      </div>
+    </article>
+  );
+
+  const renderMembers = (members: StaffMember[]) => (
+    <div className={styles.staffGrid}>{members.map(renderMemberCard)}</div>
+  );
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h1 className={`${styles.title} glow-text`}>
-          {dict.staffPage.title1} <span style={{ color: '#0DDB6E' }}>{dict.staffPage.title2}</span>
+      <header className={styles.header}>
+        <span className={styles.eyebrow}>{dict.staffPage.eyebrow}</span>
+        <h1 className={styles.title}>
+          <span>{dict.staffPage.title1}</span>
+          <span className={styles.titleAccent}>{dict.staffPage.title2}</span>
         </h1>
-        <p className={styles.description}>
-          {dict.staffPage.subtitle}
-        </p>
-      </div>
+        <div className={styles.headerFooter}>
+          <p className={styles.description}>{dict.staffPage.subtitle}</p>
+          <div className={styles.stats} aria-label={dict.staffPage.teamNumbers}>
+            <div className={styles.stat}><strong>{staffData.length}</strong><span>{dict.staffPage.departments}</span></div>
+            <div className={styles.stat}><strong>{totalMembers}</strong><span>{dict.staffPage.volunteers}</span></div>
+          </div>
+        </div>
+      </header>
 
-      {/* Tabs Navigation */}
-      <div className={styles.tabsContainer}>
-        {staffData.map((dept) => (
+      <div className={styles.tabsContainer} role="tablist" aria-label={dict.staffPage.departmentsNavigation}>
+        {staffData.map((department) => (
           <button
-            key={dept.id}
-            className={`${styles.tabButton} ${activeTab === dept.id ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab(dept.id)}
+            key={department.id}
+            id={`staff-tab-${department.id}`}
+            type="button"
+            role="tab"
+            aria-selected={activeTab === department.id}
+            aria-controls={`staff-panel-${department.id}`}
+            className={`${styles.tabButton} ${activeTab === department.id ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab(department.id)}
           >
-            {dept.name}
+            {department.name}
           </button>
         ))}
       </div>
 
-      {/* Active Department Content */}
       {activeDepartment && (
-        <div className={styles.departmentContent}>
-          <h2 className={styles.departmentTitle}>{activeDepartment.name}</h2>
-          
-          {/* Main Department Members */}
-          {activeDepartment.members && activeDepartment.members.length > 0 && (
-            <div className={styles.mainMembersSection}>
-              {renderMembers(activeDepartment.members)}
+        <section
+          id={`staff-panel-${activeDepartment.id}`}
+          className={styles.departmentContent}
+          role="tabpanel"
+          aria-labelledby={`staff-tab-${activeDepartment.id}`}
+        >
+          <div className={styles.departmentHeader}>
+            <div>
+              <span className={styles.departmentEyebrow}>{dict.staffPage.department}</span>
+              <h2 className={styles.departmentTitle}>{activeDepartment.name}</h2>
             </div>
-          )}
+            <span className={styles.memberCount}>
+              {countDepartmentMembers(activeDepartment)} {dict.staffPage.members}
+            </span>
+          </div>
 
-          {/* Sub-departments Rendering */}
+          {activeDepartment.members.length > 0 && renderMembers(activeDepartment.members)}
+
           {activeDepartment.subDepartments && activeDepartment.subDepartments.length > 0 && (
             <div className={styles.subDepartmentsContainer}>
-              {activeDepartment.subDepartments.map((subDept) => (
-                <div key={subDept.id} className={styles.subDepartmentSection}>
-                  <h3 className={styles.subDepartmentTitle}>{subDept.name}</h3>
-                  {renderMembers(subDept.members)}
-                </div>
+              {activeDepartment.subDepartments.map((subDepartment) => (
+                <section key={subDepartment.id} className={styles.subDepartmentSection}>
+                  <div className={styles.subDepartmentHeader}>
+                    <h3 className={styles.subDepartmentTitle}>{subDepartment.name}</h3>
+                    <span className={styles.memberCount}>{subDepartment.members.length} {dict.staffPage.members}</span>
+                  </div>
+                  {renderMembers(subDepartment.members)}
+                </section>
               ))}
             </div>
           )}
-        </div>
+        </section>
       )}
     </div>
   );

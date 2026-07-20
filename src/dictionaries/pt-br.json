@@ -122,9 +122,16 @@
     "directorEmail": "diretor@vatsim.com.br"
   },
   "staffPage": {
-    "title1": "Nossa",
-    "title2": "Equipe",
-    "subtitle": "Conheça os voluntários que fazem a VATBRZ acontecer. Nossa equipe dedica seu tempo e experiência para proporcionar a melhor simulação de voo e controle de tráfego aéreo.",
+    "eyebrow": "QUEM FAZ ACONTECER",
+    "title1": "Pessoas que fazem",
+    "title2": "o céu ganhar vida.",
+    "subtitle": "Por trás de cada frequência, evento e treinamento, existe uma equipe que transforma paixão em experiência.",
+    "teamNumbers": "Números da equipe",
+    "departments": "departamentos",
+    "volunteers": "voluntários",
+    "departmentsNavigation": "Departamentos da equipe",
+    "department": "Departamento",
+    "members": "membros",
     "vacant": "Vago"
   },
   "comingSoon": {
