@@ -118,7 +118,7 @@ export default function EventsClient({ initialEvents, dict, lang }: EventsClient
                 </div>
                 <div className={styles.timeBlock}>
                   <span className={styles.timeLabel}>{dict.eventsEnd}</span>
-                  <span className={styles.timeValue} style={{ fontSize: '14px', color: '#8A8FBA' }}>{formatDate(event.end_time)}</span>
+                  <span className={styles.timeValue} style={{ fontSize: '14px', color: '#ffffff' }}>{formatDate(event.end_time)}</span>
                 </div>
                 <button
                   onClick={() => handleSelectEvent(event.id)}

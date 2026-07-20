@@ -30,7 +30,7 @@
 .center {
   gap: 12px;
   font-size: 14px;
-  color: #A0A5D6;
+  color: #ffffff;
 }
 
 .navLink {
@@ -92,7 +92,7 @@
   padding: 8px 16px;
   border-radius: 4px;
   transition: background 0.2s, color 0.2s;
-  color: #A0A5D6;
+  color: #ffffff;
   white-space: nowrap;
   font-size: 14px;
 }
@@ -108,7 +108,7 @@
 }
 
 .login {
-  color: #A0A5D6;
+  color: #ffffff;
   transition: color 0.2s;
 }
 

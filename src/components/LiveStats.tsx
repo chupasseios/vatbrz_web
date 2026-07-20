@@ -66,7 +66,7 @@ export default function LiveStats({ dict }: { dict: any }) {
             <div style={{ fontSize: '48px', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '8px' }}>
               {pilotCount !== null ? pilotCount : '...'}
             </div>
-            <div style={{ fontSize: '13px', fontWeight: 600, color: '#8A8FBA', textTransform: 'uppercase', letterSpacing: '1px' }}>
+            <div style={{ fontSize: '13px', fontWeight: 600, color: '#ffffff', textTransform: 'uppercase', letterSpacing: '1px' }}>
               {dict.pilots}
             </div>
           </div>
@@ -74,7 +74,7 @@ export default function LiveStats({ dict }: { dict: any }) {
             <div style={{ fontSize: '48px', fontWeight: 800, color: '#0DDB6E', display: 'flex', alignItems: 'center', gap: '8px' }}>
               {atcCount !== null ? atcCount : '...'}
             </div>
-            <div style={{ fontSize: '13px', fontWeight: 600, color: '#8A8FBA', textTransform: 'uppercase', letterSpacing: '1px' }}>
+            <div style={{ fontSize: '13px', fontWeight: 600, color: '#ffffff', textTransform: 'uppercase', letterSpacing: '1px' }}>
               {dict.atc}
             </div>
           </div>

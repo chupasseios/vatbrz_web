@@ -80,11 +80,11 @@ export default function NavBar({ dict, lang }: { dict: any; lang: string }) {
             display: 'flex', 
             alignItems: 'center', 
             justifyContent: 'center',
-            color: '#A0A5D6',
+            color: '#ffffff',
             transition: 'all 0.2s ease'
           }}
           onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = '#fff' }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = '#A0A5D6' }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = '#ffffff' }}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
           </button>

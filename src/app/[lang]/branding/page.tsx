@@ -18,7 +18,7 @@ export default async function BrandingPage({ params }: { params: Promise<{ lang:
           
           <div className={styles.header}>
             <h1 className={`${styles.title} glow-text`}>
-              {dict.branding.title1} <span style={{ color: '#010EDB' }}>{dict.branding.title2}</span>
+              {dict.branding.title1} <span style={{ color: '#ffffff' }}>{dict.branding.title2}</span>
             </h1>
             <p className={styles.description}>
               {dict.branding.subtitle}

@@ -14,7 +14,7 @@ export default function Footer({ dict }: { dict: any }) {
           <div style={{ fontSize: '13px', color: '#ffffff', marginTop: '16px', fontWeight: 600 }}>
             {dict.copyright}
           </div>
-          <div style={{ fontSize: '12px', color: '#8A8FBA', maxWidth: '350px', lineHeight: 1.5 }}>
+          <div style={{ fontSize: '12px', color: '#ffffff', maxWidth: '350px', lineHeight: 1.5 }}>
             {dict.disclaimer}
           </div>
         </div>

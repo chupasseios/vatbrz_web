@@ -109,7 +109,7 @@ export default function LogoCard({ src, bg, downloadName, dict }: LogoCardProps)
               </div>
               <div>
                 <h3 style={{ fontSize: '24px', fontWeight: 800, margin: '0 0 8px 0', color: '#ffffff' }}>{dict.downloadLogo}</h3>
-                <p style={{ color: '#8A8FBA', margin: 0, fontSize: '14px', lineHeight: 1.5 }}>{dict.chooseFormat}</p>
+                <p style={{ color: '#ffffff', margin: 0, fontSize: '14px', lineHeight: 1.5 }}>{dict.chooseFormat}</p>
               </div>
             </div>
             
@@ -151,7 +151,7 @@ export default function LogoCard({ src, bg, downloadName, dict }: LogoCardProps)
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
                     <div className="format-badge" style={{ fontSize: '20px', fontWeight: 800, color: '#fff', transition: 'color 0.2s ease' }}>SVG</div>
                   </div>
-                  <p style={{ color: '#8A8FBA', margin: 0, fontSize: '13px', lineHeight: 1.5, paddingRight: '20px' }}>
+                  <p style={{ color: '#ffffff', margin: 0, fontSize: '13px', lineHeight: 1.5, paddingRight: '20px' }}>
                     {dict.svgDesc}
                   </p>
                 </div>
@@ -205,7 +205,7 @@ export default function LogoCard({ src, bg, downloadName, dict }: LogoCardProps)
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
                     <div className="format-badge" style={{ fontSize: '20px', fontWeight: 800, color: '#fff', transition: 'color 0.2s ease' }}>PNG</div>
                   </div>
-                  <p style={{ color: '#8A8FBA', margin: 0, fontSize: '13px', lineHeight: 1.5, paddingRight: '20px' }}>
+                  <p style={{ color: '#ffffff', margin: 0, fontSize: '13px', lineHeight: 1.5, paddingRight: '20px' }}>
                     {dict.pngDesc}
                   </p>
                 </div>
@@ -225,9 +225,9 @@ export default function LogoCard({ src, bg, downloadName, dict }: LogoCardProps)
 
             <button 
               onClick={() => setShowModal(false)}
-              style={{ width: '100%', background: 'transparent', border: '1px solid rgba(250, 250, 255, 0.1)', color: '#8A8FBA', padding: '12px', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, transition: 'all 0.2s ease', marginTop: '24px' }}
+              style={{ width: '100%', background: 'transparent', border: '1px solid rgba(250, 250, 255, 0.1)', color: '#ffffff', padding: '12px', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, transition: 'all 0.2s ease', marginTop: '24px' }}
               onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = '#ffffff'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#8A8FBA'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#ffffff'; }}
             >
               Cancelar
             </button>

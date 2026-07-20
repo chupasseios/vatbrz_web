@@ -93,7 +93,7 @@ a {
 }
 
 .glow-text {
-  background: linear-gradient(120deg, #7A819E 20%, #FFFFFF 40%, #FFFFFF 55%, #7A819E 75%);
+  background: #ffffff;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
