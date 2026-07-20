@@ -54,14 +54,17 @@ export default async function Features({ dict, dictStats, lang }: { dict: any; d
           </div>
         </div>
 
-        <div className={`glass-panel ${styles.card} ${styles.cardFull}`}>
-          {nextEvent && nextEvent.banner && (
-            <div className={styles.eventBanner}>
-              <Image src={nextEvent.banner} alt="Event Banner" fill style={{ objectFit: 'contain', objectPosition: 'right' }} />
-            </div>
-          )}
-          <div className={styles.cardContent} style={{ maxWidth: '60%', zIndex: 1 }}>
-            <span className={styles.cardTag}>{dict.eventsTag}</span>
+        <Link
+          href={`/${lang}/events`}
+          className={`glass-panel ${styles.card} ${styles.cardFull} ${nextEvent?.banner ? styles.cardFullWithBanner : styles.cardFullEmpty}`}
+          aria-label={nextEvent
+            ? `${dict.eventsSeeMore}: ${nextEvent.name}`
+            : dict.eventsTitle1}
+          aria-disabled={!nextEvent}
+          tabIndex={nextEvent ? undefined : -1}
+        >
+          <div className={styles.cardContent}>
+            <span className={styles.cardTag}>{nextEvent ? dict.eventsTag : dict.eventsEmptyTag}</span>
             <h3 className={styles.cardTitle}>
               {nextEvent ? nextEvent.name : (
                 <>{dict.eventsTitle1}<br />{dict.eventsTitle2}</>
@@ -78,9 +81,9 @@ export default async function Features({ dict, dictStats, lang }: { dict: any; d
                   <span>{dict.eventsEnd}</span>
                   {formatDate(nextEvent.end_time)}
                 </div>
-                <Link href={`/${lang}/events`} className={styles.btnSeeMore}>
+                <span className={styles.btnSeeMore}>
                   {dict.eventsSeeMore}
-                </Link>
+                </span>
               </div>
             ) : (
               <p className={styles.cardText}>
@@ -88,13 +91,33 @@ export default async function Features({ dict, dictStats, lang }: { dict: any; d
               </p>
             )}
           </div>
-          
-          {!nextEvent && (
-            <div className={styles.sadAirplaneContainer}>
-              <div className={styles.sadAirplane}>✈️</div>
+
+          {nextEvent && nextEvent.banner && (
+            <div className={styles.eventBanner}>
+              <Image
+                src={nextEvent.banner}
+                alt={`Banner do evento ${nextEvent.name}`}
+                fill
+                sizes="(max-width: 768px) 100vw, 60vw"
+                style={{ objectFit: 'contain', objectPosition: 'center' }}
+              />
             </div>
           )}
-        </div>
+          
+          {!nextEvent && (
+            <div className={styles.emptyMascot}>
+              <div className={styles.mascotGlow} aria-hidden="true" />
+              <Image
+                src="/assets/fanstasma.svg"
+                alt={dict.eventsMascotAlt}
+                width={514}
+                height={399}
+                sizes="(max-width: 768px) 70vw, 320px"
+                className={styles.mascotImage}
+              />
+            </div>
+          )}
+        </Link>
       </div>
     </section>
   );

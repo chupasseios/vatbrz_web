@@ -1,7 +1,8 @@
 import styles from './Careers.module.css';
 import Image from 'next/image';
+import Link from 'next/link';
 
-export default function Careers({ dict }: { dict: any }) {
+export default function Careers({ dict, lang }: { dict: any; lang: string }) {
   return (
     <section className={styles.careers} id="resources">
       <div className={styles.header}>
@@ -14,9 +15,9 @@ export default function Careers({ dict }: { dict: any }) {
       </div>
 
       <div className={styles.grid}>
-        <div className={`glass-panel ${styles.card}`}>
+        <Link href={`/${lang}/atc`} className={`glass-panel ${styles.card}`}>
           <div className={styles.cardBg}>
-            <Image src="/assets/atc_home.png" alt="ATC" fill style={{ objectFit: 'cover' }} />
+            <Image src="/assets/atc_home.png" alt="ATC" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover' }} />
           </div>
           <div className={styles.cardGradient}></div>
           <span className={styles.cardTag}>{dict.tagATC}</span>
@@ -26,11 +27,11 @@ export default function Careers({ dict }: { dict: any }) {
               {dict.textATC}
             </p>
           </div>
-        </div>
+        </Link>
 
-        <div className={`glass-panel ${styles.card}`}>
+        <Link href={`/${lang}/piloto`} className={`glass-panel ${styles.card}`}>
           <div className={styles.cardBg}>
-            <Image src="/assets/pilot_home_v2.png" alt="Pilot" fill style={{ objectFit: 'cover' }} />
+            <Image src="/assets/pilot_home_v2.png" alt="Pilot" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover' }} />
           </div>
           <div className={styles.cardGradient}></div>
           <span className={styles.cardTag}>{dict.tagPilot}</span>
@@ -40,7 +41,7 @@ export default function Careers({ dict }: { dict: any }) {
               {dict.textPilot}
             </p>
           </div>
-        </div>
+        </Link>
       </div>
     </section>
   );

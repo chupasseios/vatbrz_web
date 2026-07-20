@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './NavBar.module.css';
 import LanguageSwitcher from './LanguageSwitcher';
+import ThemeToggle from './ThemeToggle';
 
 export default function NavBar({ dict, lang }: { dict: any; lang: string }) {
   const pathname = usePathname();
@@ -71,23 +72,7 @@ export default function NavBar({ dict, lang }: { dict: any; lang: string }) {
           </div>
         </div>
         <div className={styles.right} style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <button style={{ 
-            background: 'rgba(255,255,255,0.05)', 
-            border: '1px solid rgba(255,255,255,0.1)', 
-            borderRadius: '8px', 
-            padding: '8px', 
-            cursor: 'pointer', 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            color: '#ffffff',
-            transition: 'all 0.2s ease'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = '#fff' }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = '#ffffff' }}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-          </button>
+          <ThemeToggle />
           <LanguageSwitcher currentLang={lang} />
           <a href="https://vatsim.net/join" target="_blank" rel="noopener noreferrer" className={styles.loginButton}>{dict.login}</a>
         </div>

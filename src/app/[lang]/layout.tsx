@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Caveat } from "next/font/google";
+import Script from "next/script";
 import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -45,8 +46,11 @@ export default async function RootLayout({
 }>) {
   const { lang } = await params;
   return (
-    <html lang={lang}>
+    <html lang={lang} data-theme="dark" suppressHydrationWarning>
       <body className={`${inter.className} ${caveat.variable}`}>
+        <Script id="vatbrz-theme" strategy="beforeInteractive">
+          {`(function(){try{var saved=localStorage.getItem('vatbrz-theme');var theme=saved||(window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');document.documentElement.dataset.theme=theme}catch(e){}})()`}
+        </Script>
         <div className="grid-bg-container">
           <div className="grid-bg"></div>
           <div className="radial-gradient-bg"></div>

@@ -34,8 +34,8 @@
 }
 
 .tabButton {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(1, 14, 219, 0.1);
+  border: 1px solid rgba(0, 84, 219, 0.2);
   color: #ffffff;
   padding: 10px 20px;
   border-radius: 30px;
@@ -48,7 +48,7 @@
 }
 
 .tabButton:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 84, 219, 0.18);
   color: #ffffff;
   transform: translateY(-2px);
 }
@@ -98,11 +98,12 @@
 /* Cards */
 .staffCard {
   border-radius: 16px;
-  transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
-  background: rgba(18, 19, 27, 0.4);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
+  transition: transform 0.2s var(--ease-out), background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  background: var(--card-bg);
+  backdrop-filter: blur(14px) saturate(1.05);
+  -webkit-backdrop-filter: blur(14px) saturate(1.05);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
   position: relative;
   overflow: hidden;
 }
@@ -110,21 +111,18 @@
 .staffCard::before {
   content: '';
   position: absolute;
-  top: 0; left: -100%;
-  width: 50%; height: 100%;
-  background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
-  transform: skewX(-25deg);
-  transition: left 0.5s ease;
-}
-
-.staffCard:hover::before {
-  left: 200%;
+  top: 0;
+  left: 18%;
+  right: 18%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 84, 219, 0.55), transparent);
 }
 
 .staffCard:hover {
   transform: translateY(-4px);
-  background-color: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: var(--card-bg-hover);
+  border-color: var(--card-border-hover);
+  box-shadow: var(--card-shadow-hover);
 }
 
 /* Regular Card overrides */
@@ -173,11 +171,11 @@
   border-radius: 50%;
   overflow: hidden;
   margin-bottom: 16px;
-  background-color: rgba(255, 255, 255, 0.05);
+  background: rgba(1, 14, 219, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(0, 84, 219, 0.22);
   position: relative;
 }
 
@@ -219,10 +217,31 @@
 }
 
 .subDepartmentSection {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--card-bg);
   padding: 32px;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+}
+
+:global(html[data-theme="light"]) .tabButton {
+  background: rgba(5, 10, 45, 0.05);
+}
+
+:global(html[data-theme="light"]) .tabButton:hover {
+  background: rgba(1, 14, 219, 0.08);
+}
+
+:global(html[data-theme="light"]) .activeTab,
+:global(html[data-theme="light"]) .activeTab:hover {
+  background: #0DDB6E;
+}
+
+:global(html[data-theme="light"]) .staffCard,
+:global(html[data-theme="light"]) .staffCard:hover,
+:global(html[data-theme="light"]) .subDepartmentSection {
+  background: var(--card-bg);
+  border-color: var(--card-border);
 }
 
 .subDepartmentTitle {

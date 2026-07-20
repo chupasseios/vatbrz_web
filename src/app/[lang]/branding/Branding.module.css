@@ -43,12 +43,21 @@
 
 .fontCard {
   padding: 40px;
-  background: rgba(18, 19, 27, 0.4);
-  border: 1px solid var(--glass-border);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 12px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.2s var(--ease-out), border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.fontCard:hover {
+  transform: translateY(-4px);
+  background: var(--card-bg-hover);
+  border-color: var(--card-border-hover);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .fontName {
@@ -93,9 +102,18 @@
   align-items: center;
   gap: 24px;
   padding: 16px 24px;
-  background: rgba(18, 19, 27, 0.4);
-  border: 1px solid var(--glass-border);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 8px;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.2s var(--ease-out), border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.departmentRow:hover {
+  transform: translateX(4px);
+  background: var(--card-bg-hover);
+  border-color: var(--card-border-hover);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .colorBadge {
@@ -120,8 +138,8 @@
   flex-direction: row;
   align-items: center;
   gap: 12px;
-  background: #15161E;
-  border: 1px solid rgba(250, 250, 255, 0.06);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   padding: 6px 16px 6px 6px;
   border-radius: 30px;
   font-size: 12px;
@@ -131,7 +149,8 @@
 }
 
 .downloadBanner:hover {
-  background: rgba(250, 250, 255, 0.05);
+  background: var(--card-bg-hover);
+  border-color: var(--card-border-hover);
 }
 
 .downloadBadge {
@@ -141,6 +160,14 @@
   border-radius: 20px;
   font-weight: 600;
   font-size: 11px;
+}
+
+:global(html[data-theme="light"]) .fontCard,
+:global(html[data-theme="light"]) .logosSection,
+:global(html[data-theme="light"]) .downloadBanner {
+  background: var(--card-bg);
+  border-color: var(--card-border);
+  box-shadow: var(--card-shadow);
 }
 
 .downloadText strong {

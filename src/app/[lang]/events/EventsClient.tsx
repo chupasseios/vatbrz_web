@@ -64,9 +64,13 @@ export default function EventsClient({ initialEvents, dict, lang }: EventsClient
   return (
     <div>
       <div ref={topRef} className={styles.header}>
-        <h1 className={styles.title}>{dict.eventsTag}</h1>
+        <div className={styles.headingGroup}>
+          <span className={styles.eyebrow}>{dict.eventsPageEyebrow}</span>
+          <h1 className={styles.title}>{dict.eventsPageTitle}</h1>
+          <p className={styles.headerDescription}>{dict.eventsPageSubtitle}</p>
+        </div>
         <Link href={`/${lang}`} className={styles.btnBack}>
-          ← {dict.eventsBack}
+          <span aria-hidden="true">←</span> {dict.eventsBack}
         </Link>
       </div>
 
@@ -78,23 +82,35 @@ export default function EventsClient({ initialEvents, dict, lang }: EventsClient
             transition: 'opacity 0.4s ease',
           }}
         >
-          {mainEvent.banner && (
-            <div className={styles.mainBanner}>
-              <Image src={mainEvent.banner} alt={mainEvent.name} fill style={{ objectFit: 'cover' }} priority />
-            </div>
-          )}
-          <div className={styles.mainContent}>
-            <h2 className={styles.mainTitle}>{mainEvent.name}</h2>
-            <div className={styles.timeContainer}>
-              <div className={styles.timeBlock}>
-                <span className={styles.timeLabel}>{dict.eventsStart}</span>
-                <span className={styles.timeValue}>{formatDate(mainEvent.start_time)}</span>
-              </div>
-              <div className={styles.timeBlock}>
-                <span className={styles.timeLabel}>{dict.eventsEnd}</span>
-                <span className={styles.timeValue}>{formatDate(mainEvent.end_time)}</span>
+          <div className={`${styles.eventHero} ${!mainEvent.banner ? styles.eventHeroWithoutBanner : ''}`}>
+            <div className={styles.mainContent}>
+              <span className={styles.eventLabel}>{dict.eventsTag}</span>
+              <h2 className={styles.mainTitle}>{mainEvent.name}</h2>
+              <div className={styles.timeContainer}>
+                <div className={styles.timeBlock}>
+                  <span className={styles.timeLabel}>{dict.eventsStart}</span>
+                  <span className={styles.timeValue}>{formatDate(mainEvent.start_time)}</span>
+                </div>
+                <div className={styles.timeBlock}>
+                  <span className={styles.timeLabel}>{dict.eventsEnd}</span>
+                  <span className={styles.timeValue}>{formatDate(mainEvent.end_time)}</span>
+                </div>
               </div>
             </div>
+            {mainEvent.banner && (
+              <div className={styles.mainBanner}>
+                <Image
+                  src={mainEvent.banner}
+                  alt={mainEvent.name}
+                  fill
+                  sizes="(max-width: 900px) 100vw, 64vw"
+                  style={{ objectFit: 'contain', objectPosition: 'center' }}
+                  priority
+                />
+              </div>
+            )}
+          </div>
+          <div className={styles.eventDescription}>
             <div
               className={styles.description}
               dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(mainEvent.description) }}

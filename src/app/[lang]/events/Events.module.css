@@ -1,77 +1,142 @@
 .container {
-  max-width: 1200px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 120px 24px 64px;
 }
 
 .header {
-  margin-bottom: 48px;
+  margin-bottom: 52px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   scroll-margin-top: 80px;
 }
 
-.title {
-  font-size: 40px;
+.headingGroup {
+  max-width: 760px;
+}
+
+.eyebrow,
+.eventLabel {
+  display: inline-flex;
+  width: fit-content;
+  padding: 6px 10px;
+  border: 1px solid rgba(0, 84, 219, 0.26);
+  border-radius: 6px;
+  background: rgba(1, 14, 219, 0.16);
+  color: #ffffff;
+  font-size: 10px;
   font-weight: 700;
-  color: #fff;
+  letter-spacing: 0.14em;
+}
+
+.title {
+  max-width: 760px;
+  margin: 18px 0 14px;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "Segoe UI", sans-serif;
+  font-size: clamp(42px, 5vw, 64px);
+  font-weight: 680;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+
+.headerDescription {
+  max-width: 610px;
   margin: 0;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 17px;
+  line-height: 1.55;
 }
 
 .btnBack {
   display: inline-flex;
   align-items: center;
   padding: 8px 16px;
-  background: rgba(94, 106, 210, 0.1);
+  background: rgba(1, 14, 219, 0.14);
   color: #ffffff;
-  border: 1px solid rgba(94, 106, 210, 0.3);
+  border: 1px solid rgba(0, 84, 219, 0.28);
   border-radius: 6px;
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
-  transition: all 0.2s ease;
+  flex-shrink: 0;
+  gap: 6px;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.14s var(--ease-out);
 }
 
 .btnBack:hover {
-  background: rgba(94, 106, 210, 0.2);
+  background: rgba(0, 84, 219, 0.22);
   color: #fff;
 }
 
 .mainEvent {
-  background: rgba(18, 19, 27, 0.6);
-  border: 1px solid rgba(94, 106, 210, 0.2);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 64px;
   display: flex;
   flex-direction: column;
+  box-shadow: var(--card-shadow);
+}
+
+.eventHero {
+  display: grid;
+  grid-template-columns: 9fr 16fr;
+  aspect-ratio: 25 / 9;
+  min-height: 0;
+}
+
+.eventHeroWithoutBanner {
+  grid-template-columns: 1fr;
+  aspect-ratio: auto;
+}
+
+.btnBack:active {
+  transform: scale(0.97);
+}
+
+:global(html[data-theme="light"]) .mainEvent,
+:global(html[data-theme="light"]) .card {
+  background: var(--card-bg);
+  border-color: var(--card-border);
+  box-shadow: var(--card-shadow);
 }
 
 .mainBanner {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
-  background: #000;
+  height: 100%;
+  min-height: 0;
+  background: #050A2D;
+  border-left: 1px solid rgba(0, 84, 219, 0.22);
 }
 
 .mainContent {
-  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+  padding: 30px;
 }
 
 .mainTitle {
-  font-size: 32px;
-  font-weight: 700;
-  margin: 0 0 16px;
+  font-size: clamp(24px, 2.8vw, 34px);
+  font-weight: 680;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  margin: 0;
   color: #fff;
 }
 
 .timeContainer {
   display: flex;
-  gap: 32px;
-  margin-bottom: 24px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
 }
 
 .timeBlock {
@@ -122,19 +187,31 @@
 }
 
 .card {
-  background: rgba(18, 19, 27, 0.4);
-  border: 1px solid rgba(94, 106, 210, 0.2);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 12px;
   padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  transition: transform 0.2s ease;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.2s var(--ease-out), border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.eventDescription {
+  padding: 32px 40px 40px;
+  border-top: 1px solid var(--card-border);
+}
+
+.eventDescription .description {
+  max-width: 860px;
 }
 
 .card:hover {
   transform: translateY(-4px);
-  border-color: rgba(94, 106, 210, 0.4);
+  background: var(--card-bg-hover);
+  border-color: var(--card-border-hover);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .cardTitle {
@@ -157,27 +234,45 @@
   justify-content: center;
   margin-top: auto;
   padding: 8px 16px;
-  background: rgba(94, 106, 210, 0.1);
+  background: rgba(1, 14, 219, 0.14);
   color: #fff;
-  border: 1px solid rgba(94, 106, 210, 0.3);
+  border: 1px solid rgba(0, 84, 219, 0.28);
   border-radius: 6px;
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.14s var(--ease-out);
 }
 
 .btnDetails:hover {
-  background: rgba(94, 106, 210, 0.3);
-  border-color: rgba(94, 106, 210, 0.6);
+  background: rgba(0, 84, 219, 0.24);
+  border-color: rgba(0, 84, 219, 0.5);
+}
+
+@media (max-width: 900px) {
+  .eventHero {
+    grid-template-columns: 1fr;
+    aspect-ratio: auto;
+  }
+
+  .mainBanner {
+    order: -1;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border-left: 0;
+    border-bottom: 1px solid rgba(0, 84, 219, 0.22);
+  }
 }
 
 @media (max-width: 768px) {
-  .timeContainer {
+  .header {
+    align-items: flex-start;
     flex-direction: column;
-    gap: 16px;
+    gap: 28px;
   }
-  .mainBanner {
-    aspect-ratio: 16 / 9;
+
+  .mainContent,
+  .eventDescription {
+    padding: 24px;
   }
 }
