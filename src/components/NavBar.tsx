@@ -1,82 +1,153 @@
-'use client';
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useRef, useState } from "react";
+import Icon from "./Icon";
+import ThemeToggle from "./ThemeToggle";
+import UtcClock from "./UtcClock";
+import { links, t } from "@/lib/portal";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import styles from './NavBar.module.css';
-import LanguageSwitcher from './LanguageSwitcher';
-import ThemeToggle from './ThemeToggle';
-
-export default function NavBar({ dict, lang }: { dict: any; lang: string }) {
+export default function NavBar({ lang }: { lang: string }) {
   const pathname = usePathname();
-
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
-    // Check if we are currently on the root language page
-    if (pathname === `/${lang}` || pathname === `/${lang}/`) {
-      e.preventDefault();
-      const targetElement = document.getElementById(targetId);
-      
-      if (targetElement) {
-        // Update URL hash without causing a jump
-        window.history.pushState(null, '', `#${targetId}`);
-
-        const startY = window.scrollY;
-        const targetY = targetElement.getBoundingClientRect().top + window.scrollY + 60;
-        const distance = targetY - startY;
-        const duration = 800; // ms for a slower, smoother effect
-        let startTime: number | null = null;
-
-        const easeInOut = (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-
-        const step = (timestamp: number) => {
-          if (!startTime) startTime = timestamp;
-          const elapsed = timestamp - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          window.scrollTo(0, startY + distance * easeInOut(progress));
-          
-          if (progress < 1) {
-            requestAnimationFrame(step);
-          }
-        };
-
-        requestAnimationFrame(step);
-      }
-    }
-  };
-
+  const [open, setOpen] = useState(false);
+  const toggle = useRef<HTMLButtonElement>(null);
+  const pages = [
+    ["", t(lang, "Início", "Home")],
+    ["piloto", t(lang, "Pilotos", "Pilots")],
+    ["atc", "ATC"],
+    ["events", t(lang, "Eventos", "Events")],
+    ["resources", t(lang, "Recursos", "Resources")],
+    ["staff", t(lang, "Nossa equipe", "Our team")],
+  ];
+  const otherLang = lang === "en" ? "pt-br" : "en";
+  const otherPath = pathname.replace(/^\/(pt-br|en)(?=\/|$)/, "/" + otherLang);
   return (
-    <nav className={styles.navbar}>
-      <div className={styles.navContainer}>
-        <div className={styles.left}>
-          <Link href={`/${lang}`}>
-            <Image src="/logos/vatbrz_logowhite.svg" alt="VATBRZ Logo" width={180} height={55} style={{ objectFit: 'contain' }} priority />
-          </Link>
-        </div>
-        <div className={styles.center}>
-          <Link href={`/${lang}/#faq`} onClick={(e) => handleNavClick(e, 'faq')} className={styles.navLink}>{dict.about}</Link>
-          <Link href={`/${lang}/#features`} onClick={(e) => handleNavClick(e, 'features')} className={styles.navLink}>{dict.community}</Link>
-          <Link href={`/${lang}/#resources`} onClick={(e) => handleNavClick(e, 'resources')} className={styles.navLink}>{dict.careers}</Link>
-          <div className={styles.dropdownContainer}>
-            <span className={styles.navLink} style={{ display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}>
-              {dict.resources}
-              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </span>
-            <div className={styles.dropdownMenu}>
-              <Link href={`/${lang}/branding`} className={styles.dropdownItem}>{dict.branding}</Link>
-              <a href="https://atc.vatsim.com.br/" target="_blank" rel="noopener noreferrer" className={styles.dropdownItem}>{dict.documents}</a>
-              <Link href={`/${lang}/staff`} className={styles.dropdownItem}>{dict.staff}</Link>
-              <Link href={`/${lang}/contact`} className={styles.dropdownItem}>{dict.contact}</Link>
-            </div>
+    <header
+      className="site-header"
+      onKeyDown={(event) => {
+        if (event.key === "Escape") {
+          setOpen(false);
+          toggle.current?.focus();
+        }
+      }}
+    >
+      <div className="utility-bar">
+        <div className="container utility-inner">
+          <span>
+            <span className="brazil-mark" aria-hidden="true" />
+            VATSIM<span className="utility-divider">/</span>
+            {t(lang, "DIVISÃO BRASILEIRA", "BRAZILIAN DIVISION")}
+          </span>
+          <div>
+            <Link href={"/" + lang + "/contact"}>
+              {t(lang, "Central de ajuda", "Help centre")}
+            </Link>
+            <span className="utility-divider">|</span>
+            <UtcClock />
           </div>
         </div>
-        <div className={styles.right} style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <ThemeToggle />
-          <LanguageSwitcher currentLang={lang} />
-          <a href="https://vatsim.net/join" target="_blank" rel="noopener noreferrer" className={styles.loginButton}>{dict.login}</a>
+      </div>
+      <div className="container nav-row">
+        <Link
+          href={"/" + lang}
+          className="brand"
+          aria-label={t(lang, "VATBRZ — início", "VATBRZ — home")}
+          onClick={() => setOpen(false)}
+        >
+          <Image
+            src="/logos/vatbrz_logodark.svg"
+            alt="VATBRZ"
+            width={128}
+            height={43}
+            priority
+          />
+          <span>BRASIL</span>
+        </Link>
+        <nav
+          className="desktop-nav"
+          aria-label={t(lang, "Navegação principal", "Main navigation")}
+        >
+          {pages.map(([path, label]) => (
+            <Link
+              href={"/" + lang + (path ? "/" + path : "")}
+              key={path}
+              aria-current={
+                pathname === "/" + lang + (path ? "/" + path : "")
+                  ? "page"
+                  : undefined
+              }
+            >
+              {label}
+            </Link>
+          ))}
+        </nav>
+        <div className="nav-actions">
+          <ThemeToggle lang={lang} />
+          <Link
+            className="language-link"
+            href={otherPath}
+            hrefLang={otherLang}
+            lang={otherLang}
+            aria-label={
+              otherLang === "en" ? "Switch to English" : "Mudar para português"
+            }
+          >
+            {otherLang === "en" ? "EN" : "PT"}
+          </Link>
+          <a
+            className="member-button"
+            href={links.account}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t(lang, "Área do membro", "Member area")}
+            <Icon name="external" size={14} />
+          </a>
+          <button
+            ref={toggle}
+            type="button"
+            className="icon-button menu-toggle"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={t(
+              lang,
+              open ? "Fechar menu" : "Abrir menu",
+              open ? "Close menu" : "Open menu",
+            )}
+            onClick={() => setOpen(!open)}
+          >
+            <Icon name={open ? "close" : "menu"} />
+          </button>
         </div>
       </div>
-    </nav>
+      {open && (
+        <nav
+          id="mobile-menu"
+          className="mobile-menu"
+          aria-label={t(lang, "Menu principal", "Main menu")}
+        >
+          {pages.map(([path, label]) => (
+            <Link
+              key={path}
+              onClick={() => setOpen(false)}
+              href={"/" + lang + (path ? "/" + path : "")}
+              aria-current={
+                pathname === "/" + lang + (path ? "/" + path : "")
+                  ? "page"
+                  : undefined
+              }
+            >
+              {label}
+              <Icon name="chevron" size={16} />
+            </Link>
+          ))}
+          <a href={links.account} target="_blank" rel="noopener noreferrer">
+            {t(lang, "Área do membro", "Member area")}
+            <Icon name="external" size={16} />
+          </a>
+        </nav>
+      )}
+    </header>
   );
 }

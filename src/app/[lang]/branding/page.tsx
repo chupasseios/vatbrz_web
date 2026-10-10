@@ -1,141 +1,192 @@
-import NavBar from '@/components/NavBar';
-import Footer from '@/components/Footer';
-import ColorCard from '@/components/ColorCard';
-import LogoCard from '@/components/LogoCard';
-import styles from './Branding.module.css';
-import Image from 'next/image';
-import { getDictionary } from '@/getDictionary';
-
-export default async function BrandingPage({ params }: { params: Promise<{ lang: 'en' | 'pt-br' }> }) {
+import Image from "next/image";
+import Icon from "@/components/Icon";
+import BrandPalette from "@/components/BrandPalette";
+import { PageHeading, SectionHeading, HelpBanner } from "@/components/PortalUI";
+import { t } from "@/lib/portal";
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
   const { lang } = await params;
-  const dict = await getDictionary(lang);
-
+  return { title: t(lang, "Identidade visual", "Brand assets") };
+}
+export default async function BrandingPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  const logos = [
+    {
+      file: "vatbrz_logodark",
+      label: t(lang, "Versão escura", "Dark version"),
+      bg: "#eff4f7",
+    },
+    {
+      file: "vatbrz_logowhite",
+      label: t(lang, "Versão branca", "White version"),
+      bg: "#050A2D",
+    },
+    {
+      file: "vatbrz_logoblue",
+      label: t(lang, "Versão azul", "Blue version"),
+      bg: "#fff",
+    },
+  ];
   return (
-    <>
-      <NavBar dict={dict.nav} lang={lang} />
-      <main style={{ paddingTop: '64px', minHeight: '100vh' }}>
-        <div className={styles.container}>
-          
-          <div className={styles.header}>
-            <h1 className={`${styles.title} glow-text`}>
-              {dict.branding.title1} <span style={{ color: '#ffffff' }}>{dict.branding.title2}</span>
-            </h1>
-            <p className={styles.description}>
-              {dict.branding.subtitle}
+    <main id="main-content">
+      <PageHeading
+        lang={lang}
+        label={t(lang, "Identidade visual", "Brand assets")}
+        title={t(
+          lang,
+          "Uma marca. O nosso Brasil.",
+          "One identity. Our Brazil.",
+        )}
+        description={t(
+          lang,
+          "Os arquivos e as cores da VATBRZ para manter nossa comunicação consistente.",
+          "VATBRZ files and colours to keep our communication consistent.",
+        )}
+        icon="compass"
+      />
+      <div className="container page-body">
+        <section className="brand-showcase">
+          <div className="brand-hero">
+            <Image
+              src="/logos/vatbrz_logowhite.svg"
+              alt="VATBRZ"
+              width={350}
+              height={116}
+              priority
+            />
+          </div>
+          <div className="brand-story">
+            <span className="eyebrow">VATBRZ · BRAND ASSETS</span>
+            <h2>
+              {t(
+                lang,
+                "O céu também é nossa assinatura.",
+                "The sky is part of our signature.",
+              )}
+            </h2>
+            <p>
+              {t(
+                lang,
+                "Nossa marca reúne referências ao Cruzeiro do Sul e aos rastros do radar. Uma identidade que conecta a aviação virtual ao Brasil e às pessoas que fazem parte da divisão.",
+                "Our mark brings together references to the Southern Cross and radar traces. An identity connecting virtual aviation to Brazil and to the people in our division.",
+              )}
             </p>
           </div>
-
-          <section className={styles.section} id="marca">
-            <h2 className={styles.sectionTitle}>{dict.branding.brandTitle}</h2>
-            <div className="glass-panel" style={{ padding: '40px', marginBottom: '32px' }}>
-              <p className={styles.description} style={{ textAlign: 'left', margin: 0 }}>
-                {dict.branding.brandDesc}
-              </p>
-            </div>
-          </section>
-
-          <section className={styles.section} id="tipografia">
-            <h2 className={styles.sectionTitle}>{dict.branding.fontsTitle}</h2>
-            <div className={styles.fontsGrid}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <div style={{ fontSize: '40px', fontWeight: 800 }}>New Order</div>
-                <div style={{ fontSize: '40px', fontWeight: 600 }}>New Order</div>
-                <div style={{ fontSize: '40px', fontWeight: 400 }}>New Order</div>
-                <div style={{ fontSize: '40px', fontWeight: 300 }}>New Order</div>
-                <div style={{ fontSize: '40px', fontWeight: 200 }}>New Order</div>
+        </section>
+        <section className="content-section">
+          <SectionHeading
+            eyebrow={t(lang, "ARQUIVOS DA MARCA", "BRAND FILES")}
+            title={t(
+              lang,
+              "A versão certa para cada fundo.",
+              "The right version for every background.",
+            )}
+          >
+            {t(
+              lang,
+              "SVG para uso vetorial. PNG para uma imagem com transparência.",
+              "SVG for vector use. PNG for an image with transparency.",
+            )}
+          </SectionHeading>
+          <div className="logo-grid">
+            {logos.map((logo) => (
+              <article className="logo-card panel" key={logo.file}>
+                <div className="logo-preview" style={{ background: logo.bg }}>
+                  <Image
+                    src={"/logos/" + logo.file + ".svg"}
+                    alt={logo.label}
+                    width={210}
+                    height={70}
+                  />
+                </div>
+                <div className="logo-card-info">
+                  <h3>{logo.label}</h3>
+                  <div className="logo-downloads">
+                    {["svg", "png"].map((ext) => (
+                      <a
+                        key={ext}
+                        href={"/logos/" + logo.file + "." + ext}
+                        download
+                      >
+                        <Icon name="download" size={14} />
+                        {ext.toUpperCase()}
+                        <span className="sr-only"> — {logo.label}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+        <section className="content-section">
+          <SectionHeading
+            eyebrow={t(lang, "PALETA DA MARCA", "BRAND PALETTE")}
+            title={t(
+              lang,
+              "As cores que nos representam.",
+              "The colours that represent us.",
+            )}
+          >
+            {t(
+              lang,
+              "Clique no código para copiar a cor.",
+              "Click a code to copy the colour.",
+            )}
+          </SectionHeading>
+          <BrandPalette lang={lang} />
+        </section>
+        <section className="content-section">
+          <SectionHeading
+            title={t(
+              lang,
+              "Cuidados que fazem a diferença.",
+              "Small details make a difference.",
+            )}
+          />
+          <div className="brand-guidelines">
+            {[
+              [
+                t(lang, "Preserve a proporção", "Preserve proportions"),
+                t(
+                  lang,
+                  "Redimensione a marca sem esticar, inclinar ou alterar os elementos do arquivo.",
+                  "Resize the mark without stretching, tilting or changing its elements.",
+                ),
+              ],
+              [
+                t(lang, "Dê espaço à marca", "Give the mark space"),
+                t(
+                  lang,
+                  "Mantenha uma área livre ao redor para que ela continue legível em qualquer aplicação.",
+                  "Leave a clear area around the mark to keep it legible in every application.",
+                ),
+              ],
+              [
+                t(lang, "Escolha o contraste", "Choose contrast"),
+                t(
+                  lang,
+                  "Prefira a versão branca em fundos escuros e as versões azul ou escura em fundos claros.",
+                  "Use the white version on dark backgrounds and blue or dark versions on light backgrounds.",
+                ),
+              ],
+            ].map(([title, text]) => (
+              <div key={title}>
+                <h3>{title}</h3>
+                <p>{text}</p>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', textAlign: 'right' }}>
-                <div style={{ fontSize: '40px', fontWeight: 800 }}>Ofelia Display</div>
-                <div style={{ fontSize: '40px', fontWeight: 600 }}>Ofelia Display</div>
-                <div style={{ fontSize: '40px', fontWeight: 400 }}>Ofelia Display</div>
-                <div style={{ fontSize: '40px', fontWeight: 300 }}>Ofelia Display</div>
-                <div style={{ fontSize: '40px', fontWeight: 200 }}>Ofelia Display</div>
-              </div>
-            </div>
-            
-            <div style={{ marginTop: '48px', display: 'flex', justifyContent: 'center' }}>
-              <a href="/fonts/VATBRZ_Fontes.zip" download className={styles.downloadBanner}>
-                <span className={styles.downloadBadge}>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: 'middle', marginRight: '4px', marginTop: '-2px' }}>
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                  </svg>
-                  {dict.branding.downloadFontsBadge}
-                </span>
-                <span className={styles.downloadText}>
-                  {dict.branding.downloadFontsText1}<strong>{dict.branding.downloadFontsTextBold}</strong>{dict.branding.downloadFontsText2}
-                </span>
-                <span className={styles.downloadLink}>{dict.branding.downloadFontsLink}</span>
-              </a>
-            </div>
-          </section>
-
-          <section className={styles.section} id="cores">
-            <h2 className={styles.sectionTitle}>{dict.branding.colorsTitle}</h2>
-            
-            <h3 style={{ fontSize: '20px', marginBottom: '16px' }}>Cores Primárias</h3>
-            <div className={styles.colorsGrid} style={{ marginBottom: '40px' }}>
-              <ColorCard hex="#050A2D" className={`${styles.colorCard} ${styles.lightText}`} style={{ background: '#050A2D' }} />
-              <ColorCard hex="#010EDB" className={`${styles.colorCard} ${styles.lightText}`} style={{ background: '#010EDB' }} />
-              <ColorCard hex="#FFFFFF" className={`${styles.colorCard} ${styles.darkText}`} style={{ background: '#FFFFFF' }} />
-            </div>
-
-            <h3 style={{ fontSize: '20px', marginBottom: '16px' }}>Cores Secundárias</h3>
-            <div className={styles.colorsGrid}>
-              <ColorCard hex="#0054DB" className={`${styles.colorCard} ${styles.lightText}`} style={{ background: '#0054DB' }} />
-              <ColorCard hex="#0DDB6E" className={`${styles.colorCard} ${styles.darkText}`} style={{ background: '#0DDB6E' }} />
-              <ColorCard hex="#FEDF00" className={`${styles.colorCard} ${styles.darkText}`} style={{ background: '#FEDF00' }} />
-            </div>
-          </section>
-
-          <section className={styles.section} id="logos">
-            <h2 className={styles.sectionTitle}>{dict.branding.logosTitle}</h2>
-            
-            <h3 style={{ fontSize: '20px', marginBottom: '16px' }}>Aplicações Principais</h3>
-            <div className={styles.colorsGrid} style={{ marginBottom: '40px' }}>
-              <LogoCard src="/logos/vatbrz_logowhite.svg" bg="#050A2D" downloadName="vatbrz_logowhite.svg" dict={dict.branding} />
-              <LogoCard src="/logos/vatbrz_logowhite.svg" bg="#010EDB" downloadName="vatbrz_logowhite.svg" dict={dict.branding} />
-              <LogoCard src="/logos/vatbrz_logodark.svg" bg="#FFFFFF" downloadName="vatbrz_logodark.svg" dict={dict.branding} />
-            </div>
-
-            <h3 style={{ fontSize: '20px', marginBottom: '16px' }}>Aplicações Secundárias</h3>
-            <div className={styles.colorsGrid}>
-              <LogoCard src="/logos/vatbrz_logodark.svg" bg="#FEDF00" downloadName="vatbrz_logodark.svg" dict={dict.branding} />
-              <LogoCard src="/logos/vatbrz_logodark.svg" bg="#0DDB6E" downloadName="vatbrz_logodark.svg" dict={dict.branding} />
-              <LogoCard src="/logos/vatbrz_logowhite.svg" bg="#0054DB" downloadName="vatbrz_logowhite.svg" dict={dict.branding} />
-            </div>
-          </section>
-
-          <section className={styles.section} id="departamentos">
-            <h2 className={styles.sectionTitle}>{dict.branding.deptTitle}</h2>
-            <div className={styles.departmentsList}>
-              <div className={styles.departmentRow}>
-                <div className={styles.colorBadge} style={{ background: '#050A2D' }}></div>
-                <div className={styles.departmentName}>vatbrz</div>
-              </div>
-              <div className={styles.departmentRow}>
-                <div className={styles.colorBadge} style={{ background: '#010EDB' }}></div>
-                <div className={styles.departmentName}>{dict.branding.deptMarketing}</div>
-              </div>
-              <div className={styles.departmentRow}>
-                <div className={styles.colorBadge} style={{ background: '#0054DB' }}></div>
-                <div className={styles.departmentName}>{dict.branding.deptTech}</div>
-              </div>
-              <div className={styles.departmentRow}>
-                <div className={styles.colorBadge} style={{ background: '#0DDB6E' }}></div>
-                <div className={styles.departmentName}>{dict.branding.deptTraining}</div>
-              </div>
-              <div className={styles.departmentRow}>
-                <div className={styles.colorBadge} style={{ background: '#FEDF00' }}></div>
-                <div className={styles.departmentName}>{dict.branding.deptOps}</div>
-              </div>
-            </div>
-          </section>
-
-        </div>
-      </main>
-      <Footer dict={dict.footer} />
-    </>
+            ))}
+          </div>
+        </section>
+        <HelpBanner lang={lang} />
+      </div>
+    </main>
   );
 }

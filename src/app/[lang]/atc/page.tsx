@@ -1,21 +1,18 @@
-import ComingSoon from '@/components/ComingSoon';
-import Footer from '@/components/Footer';
-import NavBar from '@/components/NavBar';
-import { getDictionary } from '@/getDictionary';
-
-export default async function AtcPage({ params }: { params: Promise<{ lang: 'en' | 'pt-br' }> }) {
+import CareerPage from "@/components/CareerPage";
+import { t } from "@/lib/portal";
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
   const { lang } = await params;
-  const dict = await getDictionary(lang);
-  const content = {
-    ...dict.comingSoon,
-    ...dict.comingSoon.atc,
-  };
-
-  return (
-    <>
-      <NavBar dict={dict.nav} lang={lang} />
-      <ComingSoon content={content} lang={lang} />
-      <Footer dict={dict.footer} />
-    </>
-  );
+  return { title: t(lang, "Área do controlador", "Controller hub") };
+}
+export default async function AtcPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  return <CareerPage lang={lang} atc />;
 }

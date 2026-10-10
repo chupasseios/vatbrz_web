@@ -1,61 +1,70 @@
 import type { Metadata } from "next";
-import { Inter, Caveat } from "next/font/google";
-import Script from "next/script";
+import { Barlow_Condensed, Manrope } from "next/font/google";
+import { notFound } from "next/navigation";
+import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 import "../globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
-const caveat = Caveat({ subsets: ["latin"], weight: '400', variable: '--font-caveat' });
-
+const bodyFont = Manrope({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
+});
+const displayFont = Barlow_Condensed({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-display",
+  display: "swap",
+});
 export const metadata: Metadata = {
+  metadataBase: new URL("https://vatbrz.net"),
   title: {
-    default: 'VATBRZ — Rede VATSIM Brasil',
-    template: '%s | VATBRZ',
+    default: "VATBRZ — O Brasil na sua frequência",
+    template: "%s | VATBRZ",
   },
-  description: 'A maior rede de simulação de voo do Brasil. Junte-se à comunidade VATSIM Brasil e voe com controle aéreo real.',
-  keywords: ['VATSIM', 'VATBRZ', 'simulação de voo', 'piloto virtual', 'controle aéreo', 'Brasil', 'flight simulation'],
+  description:
+    "A divisão brasileira da VATSIM. Recursos para pilotos e controladores, eventos e uma comunidade conectada pela aviação virtual.",
   openGraph: {
-    type: 'website',
-    locale: 'pt_BR',
-    url: 'https://vatbrz.net',
-    siteName: 'VATBRZ',
-    title: 'VATBRZ — Rede VATSIM Brasil',
-    description: 'A maior rede de simulação de voo do Brasil. Junte-se à comunidade VATSIM Brasil e voe com controle aéreo real.',
+    type: "website",
+    siteName: "VATBRZ",
+    locale: "pt_BR",
     images: [
       {
-        url: '/assets/banner_mocape.png',
-        width: 1920,
-        height: 1080,
-        alt: 'VATBRZ — Rede VATSIM Brasil',
+        url: "/assets/pilot_home_v2.png",
+        width: 1672,
+        height: 941,
+        alt: "Aviação virtual no Brasil",
       },
     ],
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'VATBRZ — Rede VATSIM Brasil',
-    description: 'A maior rede de simulação de voo do Brasil.',
-    images: ['/assets/banner_mocape.png'],
-  },
 };
-
 export default async function RootLayout({
   children,
   params,
-}: Readonly<{
+}: {
   children: React.ReactNode;
   params: Promise<{ lang: string }>;
-}>) {
+}) {
   const { lang } = await params;
+  if (!["pt-br", "en"].includes(lang)) notFound();
   return (
-    <html lang={lang} data-theme="dark" suppressHydrationWarning>
-      <body className={`${inter.className} ${caveat.variable}`}>
-        <Script id="vatbrz-theme" strategy="beforeInteractive">
-          {`(function(){try{var saved=localStorage.getItem('vatbrz-theme');var theme=saved||(window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');document.documentElement.dataset.theme=theme}catch(e){}})()`}
-        </Script>
-        <div className="grid-bg-container">
-          <div className="grid-bg"></div>
-          <div className="radial-gradient-bg"></div>
-        </div>
+    <html
+      lang={lang === "pt-br" ? "pt-BR" : "en"}
+      data-theme="light"
+      suppressHydrationWarning
+    >
+      <body className={bodyFont.variable + " " + displayFont.variable}>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var t=localStorage.getItem('vatbrz-theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}})()",
+          }}
+        />
+        <a href="#main-content" className="skip-link">
+          {lang === "en" ? "Skip to content" : "Pular para o conteúdo"}
+        </a>
+        <NavBar lang={lang} />
         {children}
+        <Footer lang={lang} />
       </body>
     </html>
   );

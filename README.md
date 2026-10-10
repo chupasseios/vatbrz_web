@@ -6,7 +6,7 @@ Este site foi construído com **Next.js**, **React**, e **TypeScript**, e utiliz
 ## Pré-requisitos
 
 Certifique-se de ter instalado em sua máquina:
-- [Node.js](https://nodejs.org/) (versão 18 ou superior)
+- [Node.js](https://nodejs.org/) 22.13+ ou 24+
 - NPM, Yarn, ou pnpm
 
 ## Como Iniciar o Projeto Localmente
@@ -31,3 +31,11 @@ Siga os passos abaixo para testar o site no seu ambiente de desenvolvimento:
 - `npm run build`: Cria uma versão de produção otimizada do site.
 - `npm run start`: Inicia o servidor com a versão de produção gerada (necessita rodar o build antes).
 - `npm run lint`: Analisa o código em busca de erros de sintaxe ou boas práticas.
+
+## Portal e modelos de páginas
+
+O portal inclui Início, Pilotos, ATC, Eventos, Recursos, Equipe, Contato e Marca, em português e inglês. Veja [o guia de design](docs/DESIGN.md) para os componentes reutilizáveis, funcionalidades e fontes de dados.
+
+Os dados de staff são demonstrativos e estão identificados na interface. Substitua-os por uma fonte oficial antes da publicação. A área do membro abre My VATSIM.
+
+Os comandos de desenvolvimento e build usam Webpack por compatibilidade com a dependência de sanitização de HTML no Windows/OneDrive. O primeiro build baixa as fontes e precisa de internet.

@@ -1,23 +1,47 @@
-import NavBar from '@/components/NavBar';
-import Footer from '@/components/Footer';
-import { getDictionary } from '@/getDictionary';
-import { getStaffData } from '@/services/staff';
-import StaffClient from './StaffClient';
-
-export default async function StaffPage({ params }: { params: Promise<{ lang: 'en' | 'pt-br' }> }) {
+import { getStaffData, STAFF_DATA_IS_DEMO } from "@/services/staff";
+import StaffClient from "./StaffClient";
+import { PageHeading, HelpBanner } from "@/components/PortalUI";
+import { t } from "@/lib/portal";
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
   const { lang } = await params;
-  const dict = await getDictionary(lang);
-  
-  // Chamada para a nossa API (atualmente mockada no serviço)
+  return { title: t(lang, "Nossa equipe", "Our team") };
+}
+export default async function StaffPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
   const staffData = await getStaffData();
-
   return (
-    <>
-      <NavBar dict={dict.nav} lang={lang} />
-      <main style={{ paddingTop: '64px', minHeight: '100vh', position: 'relative' }}>
-        <StaffClient dict={dict} staffData={staffData} />
-      </main>
-      <Footer dict={dict.footer} />
-    </>
+    <main id="main-content">
+      <PageHeading
+        lang={lang}
+        label={t(lang, "Nossa equipe", "Our team")}
+        title={t(
+          lang,
+          "Pessoas que conectam o céu.",
+          "People who connect the skies.",
+        )}
+        description={t(
+          lang,
+          "Conheça os departamentos, entenda o papel de cada área e encontre a equipe certa para ajudar.",
+          "Explore our departments, understand each team and find the right people to help.",
+        )}
+        icon="users"
+      />
+      <div className="container page-body">
+        <StaffClient
+          staffData={staffData}
+          lang={lang}
+          demo={STAFF_DATA_IS_DEMO}
+        />
+        <HelpBanner lang={lang} />
+      </div>
+    </main>
   );
 }

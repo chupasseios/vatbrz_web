@@ -1,132 +1,301 @@
-'use client';
-
-import { useState } from 'react';
-import Image from 'next/image';
-import styles from './Staff.module.css';
-import { StaffDepartment, StaffMember } from '@/services/staff';
-
-interface StaffClientProps {
-  dict: any;
+"use client";
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import Icon from "@/components/Icon";
+import { t } from "@/lib/portal";
+import type { StaffDepartment, StaffMember } from "@/services/staff";
+const labels: Record<string, [string, string, string, string]> = {
+  diretoria: [
+    "Diretoria",
+    "Leadership",
+    "Planejamento e coordenação da divisão.",
+    "Planning and division coordination.",
+  ],
+  tecnologia: [
+    "Tecnologia",
+    "Technology",
+    "Ferramentas e serviços para a comunidade.",
+    "Tools and services for the community.",
+  ],
+  operacoes: [
+    "Operações",
+    "Operations",
+    "Procedimentos e organização do espaço aéreo virtual.",
+    "Virtual airspace procedures and organisation.",
+  ],
+  instrucao: [
+    "Instrução",
+    "Training",
+    "Formação e desenvolvimento de pilotos e controladores.",
+    "Training and development for pilots and controllers.",
+  ],
+  marketing: [
+    "Comunicação",
+    "Communications",
+    "A identidade e a voz da nossa comunidade.",
+    "Our community identity and voice.",
+  ],
+  eventos: [
+    "Eventos",
+    "Events",
+    "Encontros que conectam pilotos e controladores.",
+    "Gatherings that connect pilots and controllers.",
+  ],
+  membros: [
+    "Membros",
+    "Membership",
+    "Acolhimento e apoio à comunidade.",
+    "Welcoming and supporting the community.",
+  ],
+};
+const roles: Record<string, string> = {
+  Diretor: "Director",
+  "Vice Diretor": "Deputy director",
+  Gerente: "Manager",
+  "Vice Gerente": "Deputy manager",
+  Assistente: "Assistant",
+  Líder: "Lead",
+  "Vice Líder": "Deputy lead",
+  Examinador: "Examiner",
+  Mentor: "Mentor",
+};
+export default function StaffClient({
+  staffData,
+  lang,
+  demo = false,
+}: {
   staffData: StaffDepartment[];
-}
-
-export default function StaffClient({ dict, staffData }: StaffClientProps) {
-  const [activeTab, setActiveTab] = useState(staffData[0]?.id || '');
-  const activeDepartment = staffData.find((department) => department.id === activeTab);
-
-  const countDepartmentMembers = (department: StaffDepartment) =>
-    department.members.length +
-    (department.subDepartments?.reduce((total, subDepartment) => total + subDepartment.members.length, 0) || 0);
-
-  const totalMembers = staffData.reduce(
-    (total, department) => total + countDepartmentMembers(department),
-    0,
+  lang: string;
+  demo?: boolean;
+}) {
+  const [department, setDepartment] = useState("all");
+  const [query, setQuery] = useState("");
+  const normalize = (s: string) =>
+    s
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  const memberMatches = (m: StaffMember) =>
+    normalize(m.name + " " + m.role + " " + (roles[m.role] || "")).includes(
+      normalize(query),
+    );
+  const count = (d: StaffDepartment) =>
+    d.members.length +
+    (d.subDepartments?.reduce((n, s) => n + s.members.length, 0) || 0);
+  const departments = staffData.filter(
+    (d) =>
+      (department === "all" || department === d.id) &&
+      (d.members.some(memberMatches) ||
+        d.subDepartments?.some((s) => s.members.some(memberMatches)) ||
+        normalize(labels[d.id]?.join(" ") || d.name).includes(
+          normalize(query),
+        )),
   );
-
-  const isLeader = (member: StaffMember) => {
-    const role = member.role.toLocaleLowerCase('pt-BR');
-    return !role.includes('vice') && ['diretor', 'gerente', 'líder'].some((title) => role.includes(title));
-  };
-
-  const renderMemberCard = (member: StaffMember) => (
+  const slots = staffData.reduce((n, d) => n + count(d), 0);
+  const card = (m: StaffMember) => (
     <article
-      key={member.id}
-      className={`${styles.staffCard} ${isLeader(member) ? styles.leaderCard : ''}`}
-      style={{ opacity: member.vacant ? 0.62 : 1 }}
+      className={"staff-card " + (m.vacant ? "staff-vacant" : "")}
+      key={m.id}
     >
-      <div className={styles.avatarContainer}>
-        {member.photoUrl && !member.vacant ? (
-          <Image src={member.photoUrl} alt={member.name} fill sizes="76px" style={{ objectFit: 'cover' }} />
+      <div className="staff-avatar">
+        {m.photoUrl && !m.vacant ? (
+          <Image
+            src={m.photoUrl}
+            alt=""
+            fill
+            sizes="54px"
+            style={{ objectFit: "cover" }}
+          />
         ) : (
-          <svg className={styles.avatarFallback} width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-            <circle cx="12" cy="7" r="4" />
-          </svg>
+          <Icon name={m.vacant ? "users" : "headset"} size={23} />
         )}
       </div>
-      <div className={styles.cardInfo}>
-        <div className={styles.staffRole}>{member.role}</div>
-        {member.vacant ? (
-          <div className={styles.staffVacant}>{dict.staffPage.vacant}</div>
-        ) : (
-          <div className={styles.staffName}>{member.name}</div>
-        )}
+      <div>
+        <span className="eyebrow">
+          {lang === "en" ? roles[m.role] || m.role : m.role}
+        </span>
+        <h3>
+          {!demo && !m.vacant
+            ? m.name
+            : t(
+                lang,
+                m.vacant ? "Posição a preencher" : "Responsável a confirmar",
+                m.vacant ? "Position to be filled" : "Lead to be confirmed",
+              )}
+        </h3>
+        {demo && <p>{t(lang, "Modelo de apresentação", "Display template")}</p>}
       </div>
     </article>
   );
-
-  const renderMembers = (members: StaffMember[]) => (
-    <div className={styles.staffGrid}>{members.map(renderMemberCard)}</div>
-  );
-
   return (
-    <div className={styles.container}>
-      <header className={styles.header}>
-        <span className={styles.eyebrow}>{dict.staffPage.eyebrow}</span>
-        <h1 className={styles.title}>
-          <span>{dict.staffPage.title1}</span>
-          <span className={styles.titleAccent}>{dict.staffPage.title2}</span>
-        </h1>
-        <div className={styles.headerFooter}>
-          <p className={styles.description}>{dict.staffPage.subtitle}</p>
-          <div className={styles.stats} aria-label={dict.staffPage.teamNumbers}>
-            <div className={styles.stat}><strong>{staffData.length}</strong><span>{dict.staffPage.departments}</span></div>
-            <div className={styles.stat}><strong>{totalMembers}</strong><span>{dict.staffPage.volunteers}</span></div>
-          </div>
+    <>
+      {demo && (
+        <div className="notice">
+          <Icon name="users" size={17} />
+          <p>
+            {t(
+              lang,
+              "Prévia da estrutura da equipe. Os cargos abaixo são demonstrativos; nomes e vagas precisam ser confirmados pela divisão.",
+              "Team structure preview. Positions below are illustrative; names and vacancies must be confirmed by the division.",
+            )}
+          </p>
         </div>
-      </header>
-
-      <div className={styles.tabsContainer} role="tablist" aria-label={dict.staffPage.departmentsNavigation}>
-        {staffData.map((department) => (
-          <button
-            key={department.id}
-            id={`staff-tab-${department.id}`}
-            type="button"
-            role="tab"
-            aria-selected={activeTab === department.id}
-            aria-controls={`staff-panel-${department.id}`}
-            className={`${styles.tabButton} ${activeTab === department.id ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab(department.id)}
-          >
-            {department.name}
-          </button>
-        ))}
-      </div>
-
-      {activeDepartment && (
-        <section
-          id={`staff-panel-${activeDepartment.id}`}
-          className={styles.departmentContent}
-          role="tabpanel"
-          aria-labelledby={`staff-tab-${activeDepartment.id}`}
+      )}
+      <div className="staff-layout">
+        <aside
+          className="staff-sidebar"
+          aria-label={t(
+            lang,
+            "Filtrar por departamento",
+            "Filter by department",
+          )}
         >
-          <div className={styles.departmentHeader}>
-            <div>
-              <span className={styles.departmentEyebrow}>{dict.staffPage.department}</span>
-              <h2 className={styles.departmentTitle}>{activeDepartment.name}</h2>
-            </div>
-            <span className={styles.memberCount}>
-              {countDepartmentMembers(activeDepartment)} {dict.staffPage.members}
-            </span>
+          <span className="eyebrow">
+            {t(lang, "DEPARTAMENTOS", "DEPARTMENTS")}
+          </span>
+          <button
+            aria-pressed={department === "all"}
+            onClick={() => setDepartment("all")}
+          >
+            {t(lang, "Toda a equipe", "All departments")}
+            <span>{staffData.length}</span>
+          </button>
+          {staffData.map((d) => (
+            <button
+              key={d.id}
+              aria-pressed={department === d.id}
+              onClick={() => setDepartment(d.id)}
+            >
+              {labels[d.id]?.[lang === "en" ? 1 : 0] || d.name}
+              <span>{count(d)}</span>
+            </button>
+          ))}
+          <div className="sidebar-help">
+            <p>
+              {t(lang, "Não sabe com quem falar?", "Not sure who to contact?")}
+            </p>
+            <Link href={"/" + lang + "/contact"}>
+              {t(lang, "Encontre o contato certo", "Find the right contact")} →
+            </Link>
           </div>
-
-          {activeDepartment.members.length > 0 && renderMembers(activeDepartment.members)}
-
-          {activeDepartment.subDepartments && activeDepartment.subDepartments.length > 0 && (
-            <div className={styles.subDepartmentsContainer}>
-              {activeDepartment.subDepartments.map((subDepartment) => (
-                <section key={subDepartment.id} className={styles.subDepartmentSection}>
-                  <div className={styles.subDepartmentHeader}>
-                    <h3 className={styles.subDepartmentTitle}>{subDepartment.name}</h3>
-                    <span className={styles.memberCount}>{subDepartment.members.length} {dict.staffPage.members}</span>
-                  </div>
-                  {renderMembers(subDepartment.members)}
-                </section>
-              ))}
+        </aside>
+        <div>
+          <div className="staff-metrics">
+            <div>
+              <strong>{staffData.length}</strong>
+              <span>{t(lang, "departamentos", "departments")}</span>
+            </div>
+            <div>
+              <strong>{slots}</strong>
+              <span>
+                {t(
+                  lang,
+                  demo ? "posições no modelo" : "posições",
+                  demo ? "template positions" : "positions",
+                )}
+              </span>
+            </div>
+            <div>
+              <Icon name="users" size={26} />
+              <span>
+                {t(
+                  lang,
+                  "Uma comunidade de voluntários",
+                  "A volunteer community",
+                )}
+              </span>
+            </div>
+          </div>
+          <label className="search-input">
+            <Icon name="search" />
+            <span className="sr-only">
+              {t(lang, "Buscar equipe", "Search team")}
+            </span>
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={t(
+                lang,
+                "Buscar cargo ou departamento…",
+                "Search role or department…",
+              )}
+            />
+          </label>
+          <p className="result-count" role="status" style={{ marginTop: 12 }}>
+            {departments.length}{" "}
+            {t(lang, "departamentos encontrados", "departments found")}
+          </p>
+          {departments.map((d) => {
+            const all = normalize(labels[d.id]?.join(" ") || d.name).includes(
+              normalize(query),
+            );
+            return (
+              <section key={d.id} className="staff-section">
+                <div className="department-heading">
+                  <h2>{labels[d.id]?.[lang === "en" ? 1 : 0] || d.name}</h2>
+                  <span>
+                    {count(d)}{" "}
+                    {t(
+                      lang,
+                      demo ? "posições no modelo" : "posições",
+                      demo ? "template positions" : "positions",
+                    )}
+                  </span>
+                </div>
+                <p>{labels[d.id]?.[lang === "en" ? 3 : 2]}</p>
+                <div className="staff-grid">
+                  {d.members.filter((m) => all || memberMatches(m)).map(card)}
+                </div>
+                {d.subDepartments?.map((s) => {
+                  const members = s.members.filter(
+                    (m) => all || memberMatches(m),
+                  );
+                  return members.length > 0 ? (
+                    <div className="subdepartment" key={s.id}>
+                      <h3>
+                        {s.id === "instrucao-atc"
+                          ? t(
+                              lang,
+                              "Formação de controladores",
+                              "Controller training",
+                            )
+                          : t(lang, "Formação de pilotos", "Pilot training")}
+                      </h3>
+                      <div className="staff-grid">{members.map(card)}</div>
+                    </div>
+                  ) : null;
+                })}
+              </section>
+            );
+          })}
+          {departments.length === 0 && (
+            <div className="empty-state">
+              <Icon name="search" size={30} />
+              <h3>
+                {t(lang, "Nenhum resultado por aqui.", "No results here.")}
+              </h3>
+              <p>
+                {t(
+                  lang,
+                  "Tente outro cargo ou departamento.",
+                  "Try another role or department.",
+                )}
+              </p>
+              <button
+                className="button button-secondary"
+                onClick={() => {
+                  setQuery("");
+                  setDepartment("all");
+                }}
+              >
+                {t(lang, "Limpar filtros", "Clear filters")}
+              </button>
             </div>
           )}
-        </section>
-      )}
-    </div>
+        </div>
+      </div>
+    </>
   );
 }

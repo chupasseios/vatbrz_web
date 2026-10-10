@@ -2,7 +2,11 @@ export interface VatsimEvent {
   id: number;
   name: string;
   link: string;
-  organisers: { region: string; division: string; subdivision: string | null }[];
+  organisers: {
+    region: string;
+    division: string;
+    subdivision: string | null;
+  }[];
   airports: { icao: string }[];
   start_time: string;
   end_time: string;
@@ -10,47 +14,47 @@ export interface VatsimEvent {
   description: string;
   banner: string | null;
 }
-
-export async function getBrazilianEvents(): Promise<VatsimEvent[]> {
+export interface EventResult {
+  events: VatsimEvent[];
+  unavailable: boolean;
+  referenceTime: number;
+}
+export async function getBrazilianEventsResult(): Promise<EventResult> {
   try {
-    const res = await fetch('https://my.vatsim.net/api/v1/events/all', {
-      next: { revalidate: 3600 }
+    const response = await fetch("https://my.vatsim.net/api/v1/events/all", {
+      next: { revalidate: 300 },
+      signal: AbortSignal.timeout(10000),
     });
-
-    if (!res.ok) {
-      console.error('Failed to fetch VATSIM events:', res.statusText);
-      return [];
-    }
-
-    const json = await res.json();
-    const events: VatsimEvent[] = json.data || [];
-    const now = new Date();
-
-    const brazilianEvents = events.filter(event => {
-      const endTime = new Date(event.end_time);
-      if (endTime < now) return false;
-
-      // Verifica se o organizador é a divisão do Brasil
-      const isBrzOrganizer = event.organisers.some(org => org.division === 'BRZ');
-
-      // Ou verifica se algum aeroporto é no Brasil (prefixos SB, SD, SN, SW, SS, SI, SJ)
-      const isBrzAirport = event.airports.some(apt => {
-        const prefix2 = apt.icao.substring(0, 2).toUpperCase();
-        return ['SB', 'SD', 'SN', 'SW', 'SS', 'SI', 'SJ'].includes(prefix2);
-      });
-
-      return isBrzOrganizer || isBrzAirport;
-    });
-
-    brazilianEvents.sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
-    return brazilianEvents;
+    if (!response.ok) throw new Error("Events API: " + response.status);
+    const json = await response.json();
+    if (!Array.isArray(json.data)) throw new Error("Invalid events response");
+    const now = Date.now();
+    const events: VatsimEvent[] = json.data.filter(
+      (event: VatsimEvent) =>
+        typeof event.id === "number" &&
+        typeof event.name === "string" &&
+        Number.isFinite(Date.parse(event.start_time)) &&
+        Date.parse(event.end_time) >= now &&
+        (event.organisers?.some((org) => org.division === "BRZ") ||
+          event.airports?.some((airport) =>
+            /^(SB|SD|SN|SW|SS|SI|SJ)[A-Z]{2}$/.test(airport.icao.toUpperCase()),
+          )),
+    );
+    return {
+      events: events.sort(
+        (a, b) => Date.parse(a.start_time) - Date.parse(b.start_time),
+      ),
+      unavailable: false,
+      referenceTime: now,
+    };
   } catch (error) {
-    console.error('Error fetching VATSIM events:', error);
-    return [];
+    console.error("VATSIM events unavailable:", error);
+    return { events: [], unavailable: true, referenceTime: Date.now() };
   }
 }
-
-export async function getNextBrazilianEvent(): Promise<VatsimEvent | null> {
-  const events = await getBrazilianEvents();
-  return events.length > 0 ? events[0] : null;
+export async function getBrazilianEvents() {
+  return (await getBrazilianEventsResult()).events;
+}
+export async function getNextBrazilianEvent() {
+  return (await getBrazilianEvents())[0] || null;
 }

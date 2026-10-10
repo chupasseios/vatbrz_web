@@ -1,55 +1,89 @@
-import Image from 'next/image';
-import styles from './Footer.module.css';
-
-export default function Footer({ dict }: { dict: any }) {
+import Image from "next/image";
+import Link from "next/link";
+import { links, t } from "@/lib/portal";
+import Icon from "./Icon";
+export default function Footer({ lang }: { lang: string }) {
   return (
-    <footer className={styles.footer}>
-      <div className={styles.content}>
-        <div className={styles.logoArea}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <Image src="/logos/vatbrz_logowhite.svg" alt="VATBRZ" width={80} height={24} style={{ objectFit: 'contain' }} />
-            <div style={{ width: '1px', height: '24px', background: 'rgba(255, 255, 255, 0.2)' }}></div>
-            <Image src="/assets/vatsim_logo.svg" alt="VATSIM" width={80} height={24} style={{ objectFit: 'contain' }} />
+    <footer className="site-footer">
+      <div className="container">
+        <div className="footer-main">
+          <div className="footer-brand">
+            <Image
+              src="/logos/vatbrz_logowhite.svg"
+              alt="VATBRZ"
+              width={142}
+              height={48}
+            />
+            <p>
+              {t(
+                lang,
+                "Um país inteiro. A mesma paixão por voar.",
+                "An entire country. A shared passion for flight.",
+              )}
+            </p>
+            <span className="eyebrow">VATSIM · SOUTH AMERICA</span>
           </div>
-          <div style={{ fontSize: '13px', color: '#ffffff', marginTop: '16px', fontWeight: 600 }}>
-            {dict.copyright}
+          <div>
+            <h3>{t(lang, "Seu próximo passo", "Your next step")}</h3>
+            <Link href={"/" + lang + "/piloto"}>
+              {t(lang, "Quero voar", "I want to fly")}
+            </Link>
+            <Link href={"/" + lang + "/atc"}>
+              {t(lang, "Quero controlar", "I want to control")}
+            </Link>
+            <Link href={"/" + lang + "/events"}>
+              {t(lang, "Participar de eventos", "Join an event")}
+            </Link>
           </div>
-          <div style={{ fontSize: '12px', color: '#ffffff', maxWidth: '350px', lineHeight: 1.5 }}>
-            {dict.disclaimer}
+          <div>
+            <h3>{t(lang, "A divisão", "The division")}</h3>
+            <Link href={"/" + lang + "/staff"}>
+              {t(lang, "Nossa equipe", "Our team")}
+            </Link>
+            <Link href={"/" + lang + "/branding"}>
+              {t(lang, "Identidade visual", "Brand assets")}
+            </Link>
+            <Link href={"/" + lang + "/contact"}>
+              {t(lang, "Fale conosco", "Contact us")}
+            </Link>
+          </div>
+          <div>
+            <h3>{t(lang, "Conecte-se", "Stay connected")}</h3>
+            <a href={links.community} target="_blank" rel="noopener noreferrer">
+              {t(lang, "Comunidade VATSIM", "VATSIM community")}
+              <Icon name="external" size={13} />
+            </a>
+            <a
+              href="https://www.instagram.com/vatsimbrasil"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram
+              <Icon name="external" size={13} />
+            </a>
+            <a
+              href="https://www.youtube.com/@VATSIMBrasil"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              YouTube
+              <Icon name="external" size={13} />
+            </a>
           </div>
         </div>
-
-        <div className={styles.linksArea} style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-          {/* Instagram */}
-          <a href="https://www.instagram.com/vatsimbrasil" target="_blank" rel="noreferrer" className={styles.link} aria-label="Instagram">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-            </svg>
-          </a>
-          {/* Discord */}
-          <a href="https://community.vatsim.net/login" target="_blank" rel="noreferrer" className={styles.link} aria-label="Discord">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
-            </svg>
-          </a>
-          {/* Facebook */}
-          <a href="https://www.facebook.com/vatsimbrasil" target="_blank" rel="noreferrer" className={styles.link} aria-label="Facebook">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-            </svg>
-          </a>
-          {/* YouTube */}
-          <a href="https://www.youtube.com/@VATSIMBrasil" target="_blank" rel="noreferrer" className={styles.link} aria-label="YouTube">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-            </svg>
-          </a>
-          {/* GitHub */}
-          <a href="https://github.com/vatsim-brasil" target="_blank" rel="noreferrer" className={styles.link} aria-label="GitHub">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z" />
-            </svg>
-          </a>
+        <div className="footer-bottom">
+          <span>© {new Date().getFullYear()} VATBRZ</span>
+          <p>
+            {t(
+              lang,
+              "Destinado exclusivamente à simulação de voo na rede VATSIM. Não utilizar para navegação aérea real.",
+              "Exclusively for flight simulation on VATSIM. Not for real-world navigation.",
+            )}
+          </p>
+          <span className="footer-signoff">
+            BRZ
+            <span className="brazil-mark" aria-hidden="true" />
+          </span>
         </div>
       </div>
     </footer>
