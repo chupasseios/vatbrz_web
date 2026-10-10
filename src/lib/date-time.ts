@@ -1,11 +1,17 @@
 /** Date-only values use YYYY-MM-DD, independently of the browser's time zone. */
 export function parseDate(value: string): Date | null {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value) || value.startsWith("0000")) return null;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value) || value.startsWith("0000"))
+    return null;
   const date = new Date(value + "T00:00:00Z");
-  return Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== value ? null : date;
+  return Number.isNaN(date.getTime()) ||
+    date.toISOString().slice(0, 10) !== value
+    ? null
+    : date;
 }
 
-export function dateValue(date: Date) { return date.toISOString().slice(0, 10); }
+export function dateValue(date: Date) {
+  return date.toISOString().slice(0, 10);
+}
 
 export function addDays(value: string, amount: number) {
   const date = parseDate(value);
@@ -43,15 +49,31 @@ export function calendarDays(month: string, weekStartsOn: 0 | 1 = 0) {
   return Array.from({ length: 42 }, (_, index) => {
     const day = new Date(first);
     day.setUTCDate(day.getUTCDate() - offset + index);
-    return day.getUTCFullYear() < 1 || day.getUTCFullYear() > 9999 ? "" : dateValue(day);
+    return day.getUTCFullYear() < 1 || day.getUTCFullYear() > 9999
+      ? ""
+      : dateValue(day);
   });
 }
 
-export function isTime(value: string) { return /^([01]\d|2[0-3]):[0-5]\d$/.test(value); }
+export function isTime(value: string) {
+  return /^([01]\d|2[0-3]):[0-5]\d$/.test(value);
+}
 
 /** "Now" always uses the zone explicitly chosen by the caller (UTC by default). */
 export function zonedNow(timeZone = "UTC", now = new Date()) {
-  const parts = new Intl.DateTimeFormat("en-CA", { timeZone, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(now);
-  const part = (type: string) => parts.find(item => item.type === type)?.value || "";
-  return { date: `${part("year")}-${part("month")}-${part("day")}`, time: `${part("hour")}:${part("minute")}` };
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(now);
+  const part = (type: string) =>
+    parts.find((item) => item.type === type)?.value || "";
+  return {
+    date: `${part("year")}-${part("month")}-${part("day")}`,
+    time: `${part("hour")}:${part("minute")}`,
+  };
 }

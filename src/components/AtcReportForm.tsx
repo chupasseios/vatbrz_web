@@ -17,6 +17,7 @@ import {
   type ReportErrors,
 } from "@/lib/atc-report";
 import styles from "./AtcReportForm.module.css";
+import { DatePicker, TimePicker } from "@/components/ui/date-time";
 
 const positions = [
   "SBSP_TWR",
@@ -467,16 +468,35 @@ export default function AtcReportForm({ lang }: { lang: string }) {
                     </button>
                   </div>
                   <div className={styles.fields}>
-                    {field(
-                      "date",
-                      tr("Data da observação (UTC)", "Observation date (UTC)"),
-                      { type: "date" },
-                    )}
-                    {field(
-                      "time",
-                      tr("Hora da observação (UTC)", "Observation time (UTC)"),
-                      { type: "time", step: 60 },
-                    )}
+                    <DatePicker
+                      id="report-date"
+                      name="date"
+                      label={tr(
+                        "Data da observação (UTC)",
+                        "Observation date (UTC)",
+                      )}
+                      value={data.date}
+                      onChange={(value) => update("date", value)}
+                      locale={lang === "en" ? "en-GB" : "pt-BR"}
+                      timeZone="UTC"
+                      required
+                      error={errors.date}
+                    />
+                    <TimePicker
+                      id="report-time"
+                      name="time"
+                      label={tr(
+                        "Hora da observação (UTC)",
+                        "Observation time (UTC)",
+                      )}
+                      value={data.time}
+                      onChange={(value) => update("time", value)}
+                      locale={lang === "en" ? "en-GB" : "pt-BR"}
+                      timeZone="UTC"
+                      zoneLabel="UTC / Zulu"
+                      required
+                      error={errors.time}
+                    />
                   </div>
                   <p className={styles.sectionHint}>
                     {tr(

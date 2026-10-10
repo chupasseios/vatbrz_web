@@ -1,0 +1,292 @@
+.field {
+  min-width: 0;
+}
+.field > label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 7px;
+}
+.field > label span {
+  font-weight: 400;
+  color: var(--muted);
+}
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 13px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--foreground);
+  text-align: left;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.trigger svg {
+  color: var(--muted);
+}
+.trigger[aria-expanded="true"] {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 1px var(--blue);
+}
+.trigger[aria-invalid="true"] {
+  border-color: #bf4747;
+}
+.trigger:disabled {
+  cursor: not-allowed;
+}
+.placeholder,
+.description {
+  color: var(--muted);
+}
+.description {
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+.error {
+  color: #b33636;
+  font-size: 12px;
+  margin-top: 7px;
+}
+:global(html[data-theme="dark"]) .error {
+  color: #ffb4ab;
+}
+.popover {
+  position: fixed;
+  z-index: 1000;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--foreground);
+  box-shadow:
+    0 16px 48px #061d3526,
+    0 3px 10px #061d3512;
+  overflow: auto;
+  overscroll-behavior: contain;
+  font-family: var(--font-body), sans-serif;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.eyebrow {
+  display: block;
+  font: 10px var(--font-mono);
+  letter-spacing: 0.09em;
+  color: var(--teal);
+  margin-bottom: 8px;
+}
+.month {
+  font-family: var(--font-body), sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: capitalize;
+  letter-spacing: -0.025em;
+}
+.monthNav {
+  display: flex;
+  gap: 4px;
+}
+.monthNav button {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--foreground);
+}
+.monthNav button:disabled {
+  cursor: not-allowed;
+}
+.previous {
+  transform: rotate(180deg);
+}
+.week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 3px;
+}
+.weekday {
+  color: var(--muted);
+  text-align: center;
+  padding-bottom: 10px;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+.day {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 36px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font: 12px var(--font-mono);
+  color: var(--foreground);
+  background: transparent;
+  margin-bottom: 3px;
+}
+.day[aria-current="date"] {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+.day.otherMonth {
+  color: var(--muted);
+  opacity: 0.65;
+}
+.day.selected {
+  background: var(--blue);
+  color: var(--surface);
+  border-color: var(--blue);
+  opacity: 1;
+}
+.day:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+.day:focus-visible {
+  outline-offset: 1px;
+}
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--line);
+  margin-top: 14px;
+  padding-top: 12px;
+  gap: 12px;
+}
+.quietButton,
+.todayButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 0;
+  padding: 5px 8px;
+  min-height: 34px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  background: none;
+}
+.quietButton {
+  color: var(--muted);
+}
+.todayButton {
+  color: var(--blue);
+}
+.timePreview {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+  font: 29px var(--font-mono);
+  letter-spacing: -0.04em;
+}
+.timePreview span {
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+.formatBadge {
+  padding: 4px 7px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  font: 10px var(--font-mono);
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.timeColumns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.columnLabel {
+  display: block;
+  margin-bottom: 9px;
+  text-align: center;
+  color: var(--muted);
+  font: 10px var(--font-mono);
+  letter-spacing: 0.07em;
+}
+.timeList {
+  height: 180px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 5px;
+  background: var(--background);
+  position: relative;
+}
+.timeOption {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  border-radius: 5px;
+  margin: 2px 0;
+  color: var(--muted);
+  font: 14px var(--font-mono);
+  cursor: pointer;
+}
+.timeOption svg {
+  position: absolute;
+  right: 8px;
+}
+.timeOption[aria-selected="true"] {
+  background: var(--blue);
+  color: var(--surface);
+  font-weight: 700;
+}
+.applyButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  border: 0;
+  border-radius: 7px;
+  padding: 12px;
+  margin-top: 12px;
+  background: var(--blue);
+  color: var(--surface);
+  font-size: 13px;
+  font-weight: 800;
+}
+@media (hover: hover) {
+  .day:not(:disabled):not(.selected):hover,
+  .timeOption:not([aria-selected="true"]):hover,
+  .monthNav button:not(:disabled):hover,
+  .quietButton:hover,
+  .todayButton:hover {
+    background: var(--surface-alt);
+    color: var(--blue);
+  }
+  .trigger:not(:disabled):hover {
+    border-color: var(--blue);
+  }
+}
+@media (max-width: 380px) {
+  .popover {
+    padding: 16px;
+  }
+  .month {
+    font-size: 14px;
+  }
+}
